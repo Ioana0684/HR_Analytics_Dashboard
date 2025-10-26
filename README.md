@@ -1,33 +1,40 @@
-# HR Analytics Dashboard – Attrition, Satisfaction & Compensation
+## Requirements
+- Power BI Desktop (May 2024+)
+- RAM: 8GB+
 
-Un dashboard Power BI realizat pe baza datasetului **IBM HR Attrition**, care oferă o analiză completă a personalului, satisfacției și retenției angajaților.
+## How to run
+1. Clone/download repo.
+2. Deschide `HR_Analytics_Dashboard.pbix` în Power BI Desktop.
+3. Dacă e nevoie, actualizează calea spre `WA_Fn-UseC_-HR-Employee-Attrition.csv` (Transform data → Data source settings → Change Source).
+4. Refresh.
 
----
+## Key DAX (principalele măsuri)
+```DAX
+Employees = DISTINCTCOUNT('HR'[EmployeeNumber])
+Attrition Rate =
+DIVIDE( CALCULATE([Employees], 'HR'[Attrition] = "Yes"), [Employees] )
+% OverTime =
+DIVIDE( CALCULATE([Employees], 'HR'[OverTime] = "Yes"), [Employees] )
+Average Monthly Income = AVERAGE('HR'[MonthlyIncome])
+Average Years at Company = AVERAGE('HR'[YearsAtCompany])
+Average Job Satisfaction = AVERAGE('HR'[JobSatisfaction])
+Average Environment Satisfaction = AVERAGE('HR'[EnvironmentSatisfaction])
+Attrition Rate by Department =
+DIVIDE( CALCULATE([Employees], 'HR'[Attrition]="Yes"), CALCULATE([Employees]) )
+markdown
+Copy code
+## Data dictionary (scurt)
+- `Attrition` (Yes/No) – status plecare
+- `Department`, `JobRole`, `JobLevel`
+- `MonthlyIncome` – venit lunar
+- `YearsAtCompany`, `TotalWorkingYears`
+- `OverTime` (Yes/No)
+- `JobSatisfaction`, `EnvironmentSatisfaction` (1–4)
 
-## Descriere
-Acest proiect analizează datele HR pentru a evidenția:
-- Rata de plecări (Attrition Rate)
-- Distribuția angajaților pe departamente și gen
-- Corelația dintre OverTime și satisfacția la locul de muncă
-- Salariul mediu lunar și vechimea în companie
-- Nivelurile de satisfacție (Job și Environment)
+## Executive summary
+- Attrition total ~16%; cel mai ridicat în Sales/HR.
+- ~28% angajați cu OverTime; corelație pozitivă cu attrition.
+- Satisfacția medie ~2.7/4; oportunități în departamentele cu scoruri <3.
 
----
-
-## Vizualizări incluse
-- **KPI-uri principale:** Total Employees, Attrition Rate, Avg Income, % OverTime  
-- **Demografie:** Gender Distribution, Employees by Department  
-- **Attrition Insights:** Attrition by Department, JobRole și YearsAtCompany  
-- **Satisfacție:** Job Satisfaction by Department, Environment Satisfaction Gauge  
-- **OverTime:** Distribuția angajaților Yes/No
-
----
-
-##  Tehnologii utilizate
-- Power BI Desktop
-- DAX (Data Analysis Expressions)
-- Dataset: [IBM HR Analytics Employee Attrition & Performance](https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset)
-
----
-
-##  Structura proiectului
+## Screenshots
+![Dashboard](images/dashboard_preview.png)
